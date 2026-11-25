@@ -9,7 +9,10 @@ public class Car extends JFrame {
     Connection con;
     Statement st;
     ResultSet rs;
+    ResultSetMetaData rd;
 
+    
+    
     JMenuBar bar = new JMenuBar();
     JMenu mSettings = new JMenu("Settings");
     JMenu mColor = new JMenu("Page Color");
@@ -24,10 +27,15 @@ public class Car extends JFrame {
     JMenuItem itView = new JMenuItem("View");
     JMenuItem itInsert = new JMenuItem("Insert");
     JMenuItem itUpdate = new JMenuItem("Update");
+    JMenuItem itDelete = new JMenuItem("Delete");
+
+    JMenu mOrder = new JMenu("Orders");
+    JMenuItem itOrderManage = new JMenuItem("Manage Orders");
 
     JMenu mGame = new JMenu("Game");
     JMenuItem itPlay = new JMenuItem("Play");
 
+    
     JPanel pLogin = new JPanel();
     Icon pic = new ImageIcon(getClass().getResource("p2.png"));
     JLabel L1 = new JLabel(pic);
@@ -39,9 +47,11 @@ public class Car extends JFrame {
     JButton b1 = new JButton("Login");
     JButton b2 = new JButton("Cancel");
 
-    JPanel pWelcome = new JPanel();
+    
+    WelcomePanel pWelcome = new WelcomePanel();
     JLabel lWelcome = new JLabel("select view to see cars");
 
+    
     JPanel pView = new JPanel();
     JButton bBack = new JButton("Back");
     JButton bNext = new JButton("Next");
@@ -50,6 +60,7 @@ public class Car extends JFrame {
     JLabel lModel = new JLabel("Car Model : ");
     JLabel lPrice = new JLabel("Car Price : ");
 
+    
     JPanel pInsert = new JPanel();
     JLabel lIn1 = new JLabel("Car Name :");
     JLabel lIn2 = new JLabel("Car Model :");
@@ -61,6 +72,7 @@ public class Car extends JFrame {
     JTextField tIn4 = new JTextField(15);
     JButton bInsert = new JButton("Insert Row");
 
+    
     JPanel pUpdate = new JPanel();
     JButton bUpBack = new JButton("Back");
     JButton bUpNext = new JButton("Next");
@@ -74,6 +86,32 @@ public class Car extends JFrame {
     JTextField tUp4 = new JTextField(15);
     JButton bUpdate = new JButton("Update Row");
 
+    
+    JPanel pDelete = new JPanel();
+    JButton bDelBack = new JButton("Back");
+    JButton bDelNext = new JButton("Next");
+    JLabel lDel1 = new JLabel("Car Name :");
+    JLabel lDel2 = new JLabel("Car Model :");
+    JLabel lDel3 = new JLabel("Car Price :");
+    JTextField tDel1 = new JTextField(15);
+    JTextField tDel2 = new JTextField(15);
+    JTextField tDel3 = new JTextField(15);
+    JButton bDelete = new JButton("Delete Row");
+
+    
+    JPanel pOrders = new JPanel();
+    JLabel lOrd1 = new JLabel("Order ID :");
+    JLabel lOrd2 = new JLabel("User ID :");
+    JLabel lOrd3 = new JLabel("Car ID :");
+    JTextField tOrd1 = new JTextField(15);
+    JTextField tOrd2 = new JTextField(15);
+    JTextField tOrd3 = new JTextField(15);
+    JButton bOrdInsert = new JButton("Insert Order");
+    JButton bOrdDisplay = new JButton("Display All Orders");
+    JTextArea taOrders = new JTextArea(12, 35);
+    JScrollPane spOrders = new JScrollPane(taOrders);
+
+    
     GamePanel pGame = new GamePanel();
     JLabel lGameTitle = new JLabel("Try to stop the time at 10.00");
     JButton bStart = new JButton("Start");
@@ -87,6 +125,7 @@ public class Car extends JFrame {
         setLayout(null);
         getContentPane().setBackground(Color.WHITE);
 
+        
         mColor.add(itBlack);
         mColor.add(itWhite);
         mFont.add(itBold);
@@ -97,15 +136,20 @@ public class Car extends JFrame {
         mCar.add(itView);
         mCar.add(itInsert);
         mCar.add(itUpdate);
+        mCar.add(itDelete);
+
+        mOrder.add(itOrderManage);
 
         mGame.add(itPlay);
 
         bar.add(mSettings);
         bar.add(mCar);
+        bar.add(mOrder);
         bar.add(mGame);
         setJMenuBar(bar);
         bar.setVisible(false);
 
+        
         pLogin.setLayout(null);
         pLogin.setBounds(0, 0, 600, 500);
         pLogin.setBackground(Color.WHITE);
@@ -129,15 +173,17 @@ public class Car extends JFrame {
         pLogin.add(b2);
         add(pLogin);
 
+        
         pWelcome.setLayout(null);
         pWelcome.setBounds(0, 0, 800, 600);
         pWelcome.setBackground(Color.WHITE);
         lWelcome.setFont(fBig);
-        lWelcome.setBounds(235, 230, 400, 50);
+        lWelcome.setBounds(245, 235, 350, 50);
         pWelcome.add(lWelcome);
         pWelcome.setVisible(false);
         add(pWelcome);
 
+        
         pView.setLayout(null);
         pView.setBounds(0, 0, 800, 600);
         pView.setBackground(Color.WHITE);
@@ -162,6 +208,7 @@ public class Car extends JFrame {
         pView.setVisible(false);
         add(pView);
 
+        
         pInsert.setLayout(null);
         pInsert.setBounds(0, 0, 800, 600);
         pInsert.setBackground(Color.WHITE);
@@ -189,6 +236,7 @@ public class Car extends JFrame {
         pInsert.setVisible(false);
         add(pInsert);
 
+        
         pUpdate.setLayout(null);
         pUpdate.setBounds(0, 0, 800, 600);
         pUpdate.setBackground(Color.WHITE);
@@ -219,6 +267,62 @@ public class Car extends JFrame {
         pUpdate.setVisible(false);
         add(pUpdate);
 
+        
+        pDelete.setLayout(null);
+        pDelete.setBounds(0, 0, 800, 600);
+        pDelete.setBackground(Color.WHITE);
+
+        bDelBack.setBounds(260, 40, 120, 35);
+        bDelNext.setBounds(420, 40, 120, 35);
+        lDel1.setBounds(180, 120, 150, 30);
+        tDel1.setBounds(340, 120, 220, 30);
+        lDel2.setBounds(180, 170, 150, 30);
+        tDel2.setBounds(340, 170, 220, 30);
+        lDel3.setBounds(180, 220, 150, 30);
+        tDel3.setBounds(340, 220, 220, 30);
+        bDelete.setBounds(320, 290, 150, 35);
+
+        lDel1.setFont(f);
+        lDel2.setFont(f);
+        lDel3.setFont(f);
+
+        pDelete.add(bDelBack); pDelete.add(bDelNext);
+        pDelete.add(lDel1); pDelete.add(tDel1);
+        pDelete.add(lDel2); pDelete.add(tDel2);
+        pDelete.add(lDel3); pDelete.add(tDel3);
+        pDelete.add(bDelete);
+        pDelete.setVisible(false);
+        add(pDelete);
+
+        
+        pOrders.setLayout(null);
+        pOrders.setBounds(0, 0, 800, 600);
+        pOrders.setBackground(Color.WHITE);
+
+        lOrd1.setBounds(180, 30, 150, 30);
+        tOrd1.setBounds(340, 30, 220, 30);
+        lOrd2.setBounds(180, 75, 150, 30);
+        tOrd2.setBounds(340, 75, 220, 30);
+        lOrd3.setBounds(180, 120, 150, 30);
+        tOrd3.setBounds(340, 120, 220, 30);
+        bOrdInsert.setBounds(210, 170, 150, 35);
+        bOrdDisplay.setBounds(390, 170, 180, 35);
+        taOrders.setFont(f);
+        spOrders.setBounds(120, 225, 560, 280);
+
+        lOrd1.setFont(f);
+        lOrd2.setFont(f);
+        lOrd3.setFont(f);
+
+        pOrders.add(lOrd1); pOrders.add(tOrd1);
+        pOrders.add(lOrd2); pOrders.add(tOrd2);
+        pOrders.add(lOrd3); pOrders.add(tOrd3);
+        pOrders.add(bOrdInsert); pOrders.add(bOrdDisplay);
+        pOrders.add(spOrders);
+        pOrders.setVisible(false);
+        add(pOrders);
+
+        
         pGame.setLayout(null);
         pGame.setBounds(0, 0, 800, 600);
         pGame.setBackground(Color.WHITE);
@@ -236,6 +340,7 @@ public class Car extends JFrame {
         pGame.setVisible(false);
         add(pGame);
 
+        
         myAc handler = new myAc();
         b1.addActionListener(handler);
         b2.addActionListener(handler);
@@ -247,6 +352,8 @@ public class Car extends JFrame {
         itView.addActionListener(handler);
         itInsert.addActionListener(handler);
         itUpdate.addActionListener(handler);
+        itDelete.addActionListener(handler);
+        itOrderManage.addActionListener(handler);
         itPlay.addActionListener(handler);
         bNext.addActionListener(handler);
         bBack.addActionListener(handler);
@@ -254,11 +361,27 @@ public class Car extends JFrame {
         bUpNext.addActionListener(handler);
         bUpBack.addActionListener(handler);
         bUpdate.addActionListener(handler);
+        bDelNext.addActionListener(handler);
+        bDelBack.addActionListener(handler);
+        bDelete.addActionListener(handler);
+        bOrdInsert.addActionListener(handler);
+        bOrdDisplay.addActionListener(handler);
         bStart.addActionListener(handler);
         bStop.addActionListener(handler);
         bReset.addActionListener(handler);
     }
 
+    
+    class WelcomePanel extends JPanel {
+        @Override
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.setColor(Color.BLACK);
+            g.drawRect(190, 180, 420, 160);
+        }
+    }
+
+    
     class GamePanel extends JPanel implements Runnable {
         Thread t;
         Boolean running = false;
@@ -328,6 +451,7 @@ public class Car extends JFrame {
         }
     }
 
+    
     public final void connectUser() {
         try {
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "");
@@ -338,11 +462,25 @@ public class Car extends JFrame {
         }
     }
 
-     public final void connectCar() {
+    
+    public final void connectCar() {
         try {
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "");
             st = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             rs = st.executeQuery("select * from mysql.car");
+            rd = rs.getMetaData();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
+    
+    
+    public final void connectOrders() {
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "");
+            st = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            rs = st.executeQuery("select * from mysql.carorder");
+            rd = rs.getMetaData();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
@@ -375,12 +513,35 @@ public class Car extends JFrame {
         }
     }
 
+    public void showDeleteCar() {
+        try {
+            String s = Integer.toString(rs.getInt(3));
+            tDel1.setText(rs.getString(1));
+            tDel2.setText(rs.getString(2));
+            tDel3.setText(s);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
+
+    public void hideAllPanels() {
+        pWelcome.setVisible(false);
+        pView.setVisible(false);
+        pInsert.setVisible(false);
+        pUpdate.setVisible(false);
+        pDelete.setVisible(false);
+        pOrders.setVisible(false);
+        pGame.setVisible(false);
+    }
+
     public void changeColor(Color bg, Color fg) {
         getContentPane().setBackground(bg);
         pWelcome.setBackground(bg);
         pView.setBackground(bg);
         pInsert.setBackground(bg);
         pUpdate.setBackground(bg);
+        pDelete.setBackground(bg);
+        pOrders.setBackground(bg);
         pGame.setBackground(bg);
 
         lWelcome.setForeground(fg);
@@ -395,6 +556,12 @@ public class Car extends JFrame {
         lUp2.setForeground(fg);
         lUp3.setForeground(fg);
         lUp4.setForeground(fg);
+        lDel1.setForeground(fg);
+        lDel2.setForeground(fg);
+        lDel3.setForeground(fg);
+        lOrd1.setForeground(fg);
+        lOrd2.setForeground(fg);
+        lOrd3.setForeground(fg);
         lGameTitle.setForeground(fg);
     }
 
@@ -407,6 +574,7 @@ public class Car extends JFrame {
         lName.setFont(f);
         lModel.setFont(f);
         lPrice.setFont(f);
+        taOrders.setFont(f);
         lIn1.setFont(f);
         lIn2.setFont(f);
         lIn3.setFont(f);
@@ -415,11 +583,18 @@ public class Car extends JFrame {
         lUp2.setFont(f);
         lUp3.setFont(f);
         lUp4.setFont(f);
+        lDel1.setFont(f);
+        lDel2.setFont(f);
+        lDel3.setFont(f);
+        lOrd1.setFont(f);
+        lOrd2.setFont(f);
+        lOrd3.setFont(f);
     }
 
     private class myAc implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            
             
             if (e.getSource() == b1) {
                 connectUser();
@@ -441,11 +616,13 @@ public class Car extends JFrame {
                 }
             }
 
+            
             if (e.getSource() == b2) {
                 t1.setText("");
                 pw.setText("");
             }
 
+            
             if (e.getSource() == ch) {
                 if (ch.isSelected()) {
                     pw.setEchoChar((char) 0);
@@ -456,6 +633,7 @@ public class Car extends JFrame {
                 }
             }
 
+            
             if (e.getSource() == itBlack) {
                 changeColor(Color.BLACK, Color.WHITE);
             }
@@ -463,6 +641,7 @@ public class Car extends JFrame {
                 changeColor(Color.WHITE, Color.BLACK);
             }
 
+            
             if (e.getSource() == itBold) {
                 changeFont(Font.BOLD);
             }
@@ -470,11 +649,9 @@ public class Car extends JFrame {
                 changeFont(Font.ITALIC);
             }
 
+            
             if (e.getSource() == itView) {
-                pWelcome.setVisible(false);
-                pInsert.setVisible(false);
-                pUpdate.setVisible(false);
-                pGame.setVisible(false);
+                hideAllPanels();
                 pView.setVisible(true);
                 connectCar();
                 try {
@@ -486,19 +663,15 @@ public class Car extends JFrame {
                 }
             }
 
+            
             if (e.getSource() == itInsert) {
-                pWelcome.setVisible(false);
-                pView.setVisible(false);
-                pUpdate.setVisible(false);
-                pGame.setVisible(false);
+                hideAllPanels();
                 pInsert.setVisible(true);
             }
 
+            
             if (e.getSource() == itUpdate) {
-                pWelcome.setVisible(false);
-                pView.setVisible(false);
-                pInsert.setVisible(false);
-                pGame.setVisible(false);
+                hideAllPanels();
                 pUpdate.setVisible(true);
                 connectCar();
                 try {
@@ -510,14 +683,33 @@ public class Car extends JFrame {
                 }
             }
 
+            
+            if (e.getSource() == itDelete) {
+                hideAllPanels();
+                pDelete.setVisible(true);
+                connectCar();
+                try {
+                    if (rs.next()) {
+                        showDeleteCar();
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+                }
+            }
+
+            
+            if (e.getSource() == itOrderManage) {
+                hideAllPanels();
+                pOrders.setVisible(true);
+            }
+
+            
             if (e.getSource() == itPlay) {
-                pWelcome.setVisible(false);
-                pView.setVisible(false);
-                pInsert.setVisible(false);
-                pUpdate.setVisible(false);
+                hideAllPanels();
                 pGame.setVisible(true);
             }
 
+            
             if (e.getSource() == bStart) {
                 pGame.start();
             }
@@ -554,6 +746,7 @@ public class Car extends JFrame {
                 }
             }
 
+            
             if (e.getSource() == bInsert) {
                 connectCar();
                 try {
@@ -573,6 +766,7 @@ public class Car extends JFrame {
                 }
             }
 
+            
             if (e.getSource() == bUpNext) {
                 try {
                     if (rs.next()) {
@@ -612,6 +806,84 @@ public class Car extends JFrame {
                     JOptionPane.showMessageDialog(null, ex);
                 }
             }
+
+            
+            if (e.getSource() == bDelNext) {
+                try {
+                    if (rs.next()) {
+                        showDeleteCar();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "End of file");
+                        rs.previous();
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+                }
+            }
+
+            if (e.getSource() == bDelBack) {
+                try {
+                    if (rs.previous()) {
+                        showDeleteCar();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "begin of the file");
+                        rs.next();
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+                }
+            }
+
+            if (e.getSource() == bDelete) {
+                try {
+                    rs.moveToCurrentRow();
+                    rs.deleteRow();
+                    JOptionPane.showMessageDialog(null, "row deleted");
+                    tDel1.setText("");
+                    tDel2.setText("");
+                    tDel3.setText("");
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+                }
+            }
+
+           
+            if (e.getSource() == bOrdInsert) {
+                connectOrders();
+                try {
+                    rs.moveToInsertRow();
+                    rs.updateString(1, tOrd1.getText());
+                    rs.updateString(2, tOrd2.getText());
+                    rs.updateString(3, tOrd3.getText());
+                    rs.insertRow();
+                    JOptionPane.showMessageDialog(null, "row inserted correctly");
+                    tOrd1.setText("");
+                    tOrd2.setText("");
+                    tOrd3.setText("");
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+                }
+            }
+
+            if (e.getSource() == bOrdDisplay) {
+                taOrders.setText("");
+                try {
+                    connectOrders();
+                    int n = rd.getColumnCount();
+                    for (int i = 1; i <= n; i++) {
+                        taOrders.append(rd.getColumnName(i) + "        ");
+                    }
+                    taOrders.append("\n");
+                    while (rs.next()) {
+                        for (int i = 1; i <= n; i++) {
+                            taOrders.append(rs.getString(i) + "       ");
+                        }
+                        taOrders.append("\n");
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex);
+                }
+            }
         }
     }
 
@@ -623,3 +895,4 @@ public class Car extends JFrame {
         myf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }
+
