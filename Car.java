@@ -10,7 +10,6 @@ public class Car extends JFrame {
     Statement st;
     ResultSet rs;
 
-    // المنيو بار
     JMenuBar bar = new JMenuBar();
     JMenu mSettings = new JMenu("Settings");
     JMenu mColor = new JMenu("Page Color");
@@ -29,7 +28,6 @@ public class Car extends JFrame {
     JMenu mGame = new JMenu("Game");
     JMenuItem itPlay = new JMenuItem("Play");
 
-    // 1) شاشة تسجيل الدخول
     JPanel pLogin = new JPanel();
     Icon pic = new ImageIcon(getClass().getResource("p2.png"));
     JLabel L1 = new JLabel(pic);
@@ -41,11 +39,9 @@ public class Car extends JFrame {
     JButton b1 = new JButton("Login");
     JButton b2 = new JButton("Cancel");
 
-    // 2) شاشة الترحيب بعد الدخول
     JPanel pWelcome = new JPanel();
     JLabel lWelcome = new JLabel("select view to see cars");
 
-    // 3) شاشة عرض السيارات View
     JPanel pView = new JPanel();
     JButton bBack = new JButton("Back");
     JButton bNext = new JButton("Next");
@@ -54,7 +50,6 @@ public class Car extends JFrame {
     JLabel lModel = new JLabel("Car Model : ");
     JLabel lPrice = new JLabel("Car Price : ");
 
-    // 4) شاشة الإضافة Insert
     JPanel pInsert = new JPanel();
     JLabel lIn1 = new JLabel("Car Name :");
     JLabel lIn2 = new JLabel("Car Model :");
@@ -66,7 +61,6 @@ public class Car extends JFrame {
     JTextField tIn4 = new JTextField(15);
     JButton bInsert = new JButton("Insert Row");
 
-    // 5) شاشة التعديل Update
     JPanel pUpdate = new JPanel();
     JButton bUpBack = new JButton("Back");
     JButton bUpNext = new JButton("Next");
@@ -80,7 +74,6 @@ public class Car extends JFrame {
     JTextField tUp4 = new JTextField(15);
     JButton bUpdate = new JButton("Update Row");
 
-    // 6) شاشة اللعبة Game
     GamePanel pGame = new GamePanel();
     JLabel lGameTitle = new JLabel("Try to stop the time at 10.00");
     JButton bStart = new JButton("Start");
@@ -94,7 +87,6 @@ public class Car extends JFrame {
         setLayout(null);
         getContentPane().setBackground(Color.WHITE);
 
-        // تجهيز المنيو بار
         mColor.add(itBlack);
         mColor.add(itWhite);
         mFont.add(itBold);
@@ -114,7 +106,6 @@ public class Car extends JFrame {
         setJMenuBar(bar);
         bar.setVisible(false);
 
-        // تجهيز شاشة تسجيل الدخول
         pLogin.setLayout(null);
         pLogin.setBounds(0, 0, 600, 500);
         pLogin.setBackground(Color.WHITE);
@@ -138,7 +129,6 @@ public class Car extends JFrame {
         pLogin.add(b2);
         add(pLogin);
 
-        // تجهيز شاشة الترحيب
         pWelcome.setLayout(null);
         pWelcome.setBounds(0, 0, 800, 600);
         pWelcome.setBackground(Color.WHITE);
@@ -148,7 +138,6 @@ public class Car extends JFrame {
         pWelcome.setVisible(false);
         add(pWelcome);
 
-        // تجهيز شاشة View
         pView.setLayout(null);
         pView.setBounds(0, 0, 800, 600);
         pView.setBackground(Color.WHITE);
@@ -173,7 +162,6 @@ public class Car extends JFrame {
         pView.setVisible(false);
         add(pView);
 
-        // تجهيز شاشة Insert
         pInsert.setLayout(null);
         pInsert.setBounds(0, 0, 800, 600);
         pInsert.setBackground(Color.WHITE);
@@ -201,7 +189,6 @@ public class Car extends JFrame {
         pInsert.setVisible(false);
         add(pInsert);
 
-        // تجهيز شاشة Update
         pUpdate.setLayout(null);
         pUpdate.setBounds(0, 0, 800, 600);
         pUpdate.setBackground(Color.WHITE);
@@ -232,7 +219,6 @@ public class Car extends JFrame {
         pUpdate.setVisible(false);
         add(pUpdate);
 
-        // تجهيز شاشة اللعبة Game
         pGame.setLayout(null);
         pGame.setBounds(0, 0, 800, 600);
         pGame.setBackground(Color.WHITE);
@@ -250,7 +236,6 @@ public class Car extends JFrame {
         pGame.setVisible(false);
         add(pGame);
 
-        // ربط الأحداث
         myAc handler = new myAc();
         b1.addActionListener(handler);
         b2.addActionListener(handler);
@@ -274,7 +259,6 @@ public class Car extends JFrame {
         bReset.addActionListener(handler);
     }
 
-    // كلاس اللعبة بالثريد ورسم الدائرة الحمراء والعداد بداخلها
     class GamePanel extends JPanel implements Runnable {
         Thread t;
         Boolean running = false;
@@ -344,7 +328,6 @@ public class Car extends JFrame {
         }
     }
 
-    // الاتصال الأول: جدول المستخدمين لتسجيل الدخول
     public final void connectUser() {
         try {
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "");
@@ -355,8 +338,7 @@ public class Car extends JFrame {
         }
     }
 
-    // الاتصال الثاني: جدول السيارات
-    public final void connectCar() {
+     public final void connectCar() {
         try {
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "");
             st = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -438,7 +420,7 @@ public class Car extends JFrame {
     private class myAc implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            // زر تسجيل الدخول
+            
             if (e.getSource() == b1) {
                 connectUser();
                 try {
@@ -459,13 +441,11 @@ public class Car extends JFrame {
                 }
             }
 
-            // زر المسح
             if (e.getSource() == b2) {
                 t1.setText("");
                 pw.setText("");
             }
 
-            // إظهار وإخفاء كلمة المرور
             if (e.getSource() == ch) {
                 if (ch.isSelected()) {
                     pw.setEchoChar((char) 0);
@@ -476,7 +456,6 @@ public class Car extends JFrame {
                 }
             }
 
-            // إعدادات اللون
             if (e.getSource() == itBlack) {
                 changeColor(Color.BLACK, Color.WHITE);
             }
@@ -484,7 +463,6 @@ public class Car extends JFrame {
                 changeColor(Color.WHITE, Color.BLACK);
             }
 
-            // إعدادات شكل الخط
             if (e.getSource() == itBold) {
                 changeFont(Font.BOLD);
             }
@@ -492,7 +470,6 @@ public class Car extends JFrame {
                 changeFont(Font.ITALIC);
             }
 
-            // خيار View
             if (e.getSource() == itView) {
                 pWelcome.setVisible(false);
                 pInsert.setVisible(false);
@@ -509,7 +486,6 @@ public class Car extends JFrame {
                 }
             }
 
-            // خيار Insert
             if (e.getSource() == itInsert) {
                 pWelcome.setVisible(false);
                 pView.setVisible(false);
@@ -518,7 +494,6 @@ public class Car extends JFrame {
                 pInsert.setVisible(true);
             }
 
-            // خيار Update
             if (e.getSource() == itUpdate) {
                 pWelcome.setVisible(false);
                 pView.setVisible(false);
@@ -535,7 +510,6 @@ public class Car extends JFrame {
                 }
             }
 
-            // خيار Play في قائمة Game
             if (e.getSource() == itPlay) {
                 pWelcome.setVisible(false);
                 pView.setVisible(false);
@@ -544,7 +518,6 @@ public class Car extends JFrame {
                 pGame.setVisible(true);
             }
 
-            // أزرار اللعبة
             if (e.getSource() == bStart) {
                 pGame.start();
             }
@@ -555,7 +528,6 @@ public class Car extends JFrame {
                 pGame.reset();
             }
 
-            // أزرار التنقل في شاشة View
             if (e.getSource() == bNext) {
                 try {
                     if (rs.next()) {
@@ -582,7 +554,6 @@ public class Car extends JFrame {
                 }
             }
 
-            // زر الإضافة
             if (e.getSource() == bInsert) {
                 connectCar();
                 try {
@@ -602,7 +573,6 @@ public class Car extends JFrame {
                 }
             }
 
-            // أزرار التنقل والتعديل في شاشة Update
             if (e.getSource() == bUpNext) {
                 try {
                     if (rs.next()) {
